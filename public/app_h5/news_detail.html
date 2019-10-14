@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>详情</title>
+    <link rel="stylesheet" href="css/mint-ui.css">
+    <link rel="stylesheet" href="css/common.css">
+    <script src="js/vue.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/mint-ui.js"></script>
+    <script src="js/common.js"></script>
+</head>
+<style>
+    #NewsDetails {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #010101;
+        -webkit-overflow-scrolling: touch;
+        overflow-y: scroll;
+        padding: 0 0.15rem 0.19rem;
+    }
+
+    .v-html {
+        width: 100%;
+        height: 100%;
+        /* height: 90%; */
+        font-size: 0.14rem;
+        color:#F8F8F8;
+        background: #010101;
+        box-sizing: border-box;
+        border-radius: 0.1rem;
+        padding-top: 0.32rem;
+        overflow-y: scroll;
+    }
+
+    .btn {
+        position: fixed;
+        width: 2.82rem;
+        height: 0.4rem;
+        line-height: 0.4rem;
+        font-size: 0.15rem;
+        background: #3378FF;
+        border-radius: 0.2rem;
+        text-align: center;
+        color: #F8F8F8;
+        left: 50%;
+        margin-left: -1.41rem;
+        bottom: 0.65rem;
+    }
+    h4{
+        margin: 0;
+        text-align: center;
+        color: #F8F8F8;
+        font-size: 0.18rem;
+        font-weight: inherit;
+    }
+    .p{
+        text-align: center;
+        font-size: 0.11rem;
+        color: #F8F8F8;
+        margin-top: 0.05rem;
+    }
+    .html{
+        padding: 0 0.15rem;
+        color: #B1AFAF;
+        font-size: 0.13rem;
+    }
+    img{
+        max-width: 100%;
+    }
+</style>
+
+<body>
+    <div id="NewsDetails" v-cloak>
+        <div class="v-html">
+            <h4>{{details.title}}</h4>
+            <!--<p class="p">{{details.created_at}}</p>-->
+            <div class="html" v-html="details.body">
+                   
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    new Vue({
+        el: '#NewsDetails',
+        data: {
+            details:{}
+        },
+        methods: {
+            //获取详情
+            getData() {
+                var _this = this;
+                $.ajax({
+                    url: apiUrl + '/article/detail',
+                    data: {
+                        id:getQueryString('id')
+                    },
+                    type: 'get',
+                    cache: false,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status_code == 200) {
+                            _this.details = data.data
+                        }
+                        console.log(data);
+                    }
+                });
+            },
+        },
+        mounted: function () {
+            this.getData()
+        }
+    })
+</script>
